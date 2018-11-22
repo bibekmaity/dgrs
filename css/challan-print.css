@@ -1,0 +1,337 @@
+@charset "utf-8";
+/* CSS Document */
+@page
+{
+	width: 210mm !important;
+	height: 297mm !important;
+    margin: 0mm; 
+    
+}
+@media print
+{
+	
+	.box
+{
+	width: 210mm !important;
+	height: 297mm !important;
+	margin:0px !important;
+	padding-top:26px;
+	page-break-after:always;
+	zoom:68%;
+}
+}
+
+
+.box
+{
+	width:1085px;
+	height:1593px;
+	margin:10px auto;
+
+	padding-top:26px;
+	page-break-after:always;
+	
+}
+.box_body
+{
+	margin-top:67px;
+	margin-left:72px;
+	width:1005px;
+	height:1470px;
+}
+#content
+{
+/*	border:1px solid #000;*/
+	position:relative;
+	margin:0px auto;
+	width:100%;
+	height:503px;
+	/*margin-bottom: 2px;*/
+
+}
+
+#serial
+{
+	float:left;
+	position:relative;
+	top:18px;
+	margin-left:114px;
+	font-size:14px;
+	width:110px;
+	height:15px;
+	
+}
+#print_date
+{
+	float:right;
+	position:relative;
+	top:18px;
+	margin-right:65px;
+	font-size:14px;
+	width:67px;
+	height:15px;
+	
+}
+#challan_no
+{
+	float:right;
+	position:relative;
+	top:45px;
+	left:270px;
+	font-size:14px;
+	width:84px;
+	height:15px;
+	
+}
+
+canvas
+{
+	float:left;
+	position:relative;
+	top:55px;
+	left:-140px;
+	font-size:14px;
+	height:56px !important;
+}
+	
+#ltml_holder
+{
+	float:left;
+	position:relative;
+	top:108px;
+	margin-left:152px;
+	font-size:14px;
+	width:740px;
+	height:15px;
+	padding-right:80px;
+	
+	
+}
+#ltml_no
+{
+	float:left;
+	position:relative;
+	top:111px;
+	margin-left:105px;
+	font-size:14px;
+	width:70px;
+	height:15px;
+	
+	
+}
+#deed_no
+{
+	float:left;
+	position:relative;
+	top:112px;
+	margin-left:116px;
+	font-size:14px;
+	width:78px;
+	height:15px;
+	
+
+}
+#valid_upto
+{
+	float:left;
+	position:relative;
+	top:113px;
+	margin-left:176px;
+	font-size:14px;
+	width:305px;
+	height:15px;
+	padding-right:120px;
+	
+	
+}
+#challan_issued_on
+{
+	float:left;
+	position:relative;
+	top:122px;
+	margin-left:166px;
+	font-size:14px;
+	width:126px;
+	height:15px;
+	
+	
+}
+#challan_exp
+{
+	float:left;
+	position:relative;
+	top:122px;
+	margin-left:255px;
+	font-size:14px;
+	width:381px;
+	font-weight:bold;
+	height:15px;
+	
+	
+}
+#district
+{
+	float:left;
+	position:relative;
+	top:160px;
+	margin-left:93px;
+	font-size:14px;
+	width:126px;
+	height:15px;
+	
+	
+}
+#ps
+{
+	float:left;
+	position:relative;
+	top:163px;
+	margin-left:115px;
+	font-size:14px;
+	width:161px;
+	height:15px;
+	
+	
+}
+#mouja
+{
+	float:left;
+	position:relative;
+	top:166px;
+	margin-left:186px;
+	font-size:14px;
+	width:270px;
+	height:15px;
+	padding-right:50px;
+	
+}
+#jl_no
+{
+	float:left;
+	position:relative;
+	top:170px;
+	margin-left:98px;
+	font-size:14px;
+	width:82px;
+	height:15px;
+	
+
+
+}
+#plot
+{
+	float:left;
+	position:relative;
+	top:172px;
+	margin-left:195px;
+	font-size:14px;
+	width:139px;
+	height:15px;
+	overflow:hidden;
+	
+}
+#area
+{
+	float:left;
+	position:relative;
+	top:170px;
+	margin-left:170px;
+	font-size:14px;
+	width:30px;
+	height:15px;
+	padding-right:150px;
+	
+}
+#purchaser
+{
+	float:left;
+	position:relative;
+	top:80px;
+	margin-left:109px;
+	font-size:14px;
+	width:240px;
+	height:15px;
+	
+}
+#purchaser_addr
+{
+	float:left;
+	position:relative;
+	top:70px;
+	margin-left:69px;
+	font-size:14px;
+	width:240px;
+	height:15px;
+	padding-right:50px;
+	
+}
+#truck_no
+{
+	position:relative;
+	float:left;
+	margin-top:80px;
+	margin-left:55px;
+	font-size:14px;
+	width:100px;
+	height:15px;
+}
+#mineral
+{
+	float:left;
+	position:relative;
+	margin-top:140px;
+	margin-left:478px;
+	font-size:14px;
+	width:63px;
+	height:15px;
+	
+}
+#qty_issued
+{
+	float:left;
+	position:relative;
+	margin-top:140px;
+	margin-left:92px;
+	font-size:14px;
+	width:68px;
+	height:15px;
+	
+	
+}
+#signature 
+{
+	float:left;
+	position:relative;
+	top:171px;
+	left:0px;
+	font-size:14px;
+	height:25px !important;
+	overflow:hidden;
+	width: 300px;
+	text-align: center;
+	
+}
+#block_name
+{
+	float:left;
+	position:relative;
+	margin-top:219px;
+	margin-left:-762px;
+	font-size:14px;
+	width:100px;
+	height:15px;
+	
+}
+#block
+{
+	float:left;
+	position:relative;
+	top:40px;
+	margin-left:526px;
+	font-size:15px;
+	width:360px;
+	height:15px;
+	padding-right:30px;
+	/*background-color: #0f9;*/
+	
+}	
