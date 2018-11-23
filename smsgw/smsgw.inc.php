@@ -153,8 +153,8 @@ class SMSGW {
     $UsageData['Status']   = $Status;
     $UsageData['Script']   = __FILE__ . '[' . __LINE__ . ']';
 
-    $MySQLiDB = new MySQLiDBHelper();
-    $MySQLiDB->insert(MySQL_Pre . 'SMS_Usage', $UsageData);
+    //$MySQLiDB = new MySQLiDBHelper();
+    //$MySQLiDB->insert(MySQL_Pre . 'SMS_Usage', $UsageData);
 
     return $Status;
   }
