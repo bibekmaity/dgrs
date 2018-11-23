@@ -49,7 +49,7 @@ function send_sms($cell_no,$mMessage){
 	
 	// Authorisation details.
 $result = SMSGW::SendSMS($mMessage, $cell_no); // This is the result from the API
-//print_r($result);
+print_r($result);
 }
 
 ?>
