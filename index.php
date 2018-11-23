@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 'On'); // TODO:: Turn Off for Security Audit
+error_reporting(E_ALL);
 header("X-XSS-Protection: 1;mode = block");
 
 include('./header.php'); 
