@@ -135,7 +135,7 @@ if(($submit=="Submit") or ($submit=="সাবমিট করুন"))
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Citizen Complaint | Log in</title>
+  <title>জন সহায়ক - পশ্চিম মেদিনীপুর জেলা প্রশাসন</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
  <meta http-equiv="Content-Security-Policy" content="default-src 'self';img-src * 'self' data: http:; connect-src 'self' 'unsafe-inline' 'unsafe-eval' *; child-src 'self' 'unsafe-inline' 'unsafe-eval' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *  ; style-src  'self' 'unsafe-inline' 'unsafe-eval' * data: http:">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -315,12 +315,12 @@ foreach ($rowe as $keye => $value)
               <li ><a href="#citizen" data-toggle="tab">Citizen Login</a></li>
               <li class="active"><a href="#department" data-toggle="tab">Departmental Login</a></li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content" style="padding:15px 0px !important; border:none;">
               <div class=" tab-pane" id="citizen">
                 <div class="col-xs-12">
                   <div class="checkbox icheck">
-                    <label>
-                      <input type="checkbox" name="bengali" id="bengali" value="B"> বাংলা
+                    <label style="padding-left:5px;">
+                      <input type="checkbox" name="bengali" id="bengali" value="B" > বাংলা
                     </label>
                     <input type="hidden" id="hid_lang"  name="hid_lang">
                   </div>
