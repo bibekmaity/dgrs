@@ -109,12 +109,12 @@ $( "#edit" ).click(function() {
 	  $('#sub_division').select2('open');
 	  return false;
 	}
-	if(block=="")
+	/*if(block=="")
 	{
 	  alertify.error('Please select a Block');
 	  $('#block').select2('open');
 	  return false;
-	}
+	}*/
 	if(ps=="")
 	{
 	  alertify.error('Please select a Police Station');
@@ -160,8 +160,9 @@ $( "#edit" ).click(function() {
 			,tag:'UPDATE-USER'},
 	  dataType: "html",
 	  success:function( msg) {
-	  	
-			   $( "#info" ).html( msg );
+	  	 
+			   alert('User updated Successfully')
+			   window.location.href='./user-master.php'  
 	}
 	});
 });
@@ -227,12 +228,12 @@ $( "#submit" ).click(function() {
 	  $('#sub_division').select2('open');
 	  return false;
 	}
-	if(block=="")
+	/*if(block=="")
 	{
 	  alertify.error('Please select a Block');
 	  $('#block').select2('open');
 	  return false;
-	}
+	}*/
 	if(ps=="")
 	{
 	  alertify.error('Please select a Police Station');
