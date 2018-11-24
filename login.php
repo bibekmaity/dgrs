@@ -138,6 +138,7 @@ if(($submit=="Submit") or ($submit=="সাবমিট করুন"))
   <title>জন সহায়ক - পশ্চিম মেদিনীপুর জেলা প্রশাসন</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
  <meta http-equiv="Content-Security-Policy" content="default-src 'self';img-src * 'self' data: http:; connect-src 'self' 'unsafe-inline' 'unsafe-eval' *; child-src 'self' 'unsafe-inline' 'unsafe-eval' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *  ; style-src  'self' 'unsafe-inline' 'unsafe-eval' * data: http:">
+ <link rel="icon"  href="./images/favicon.ico">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/dist/css/AdminLTE.min.css">
