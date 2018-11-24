@@ -99,9 +99,10 @@ if($current_page!='index.php' )
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Citizen Complaints</title>
+  <title>জন সহায়ক - পশ্চিম মেদিনীপুর জেলা প্রশাসন</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
  <meta http-equiv="Content-Security-Policy" content="default-src 'self';img-src * 'self' data: http:; connect-src 'self' 'unsafe-inline' 'unsafe-eval' *; child-src 'self' 'unsafe-inline' 'unsafe-eval' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *  ; style-src  'self' 'unsafe-inline' 'unsafe-eval' * data: http:">
+ <link rel="icon"  href="./images/favicon.ico">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/dist/css/AdminLTE.min.css">
@@ -131,9 +132,9 @@ if($current_page!='index.php' )
     <a href="<?php echo $full_url; ?>/index.php" class="logo">
      <img src="<?php echo $full_url; ?>/images/logo.png" alt="Citizen Complaint" title="Citizen Complaint" height="40px" width="25px" align="left" style="margin-top:8px;" />
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>T</b>P</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Citizen Complaint</b> &nbsp; </span>
+      <!--<span class="logo-mini"><b>T</b>P</span>
+       logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>জন সহায়ক</b> &nbsp; </span>
     </a>
     
     <!-- Header Navbar: style can be found in header.less -->
@@ -284,9 +285,12 @@ foreach ($row as $key => $value)
 		 // echo "xxx";
             $sql_sub ="select * from menu_master ";
             $sql_sub.="where parent_id=:mid and show_tag='T' ";
-           // $sql_sub.="and mid in(".$ses_page_per.") ";
+			if($ses_user_type!="A")
+			{
+            $sql_sub.="and mid in(".$ses_page_per.") ";
+			}
             $sql_sub.="order by srl";
-			//echo $sql_sub;
+			//echo "$sql_sub--$mid<br>";
             $sth_sub = $conn->prepare($sql_sub);
 			$sth_sub->bindParam(':mid', $mid);
 			$sth_sub->execute();
