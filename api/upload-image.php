@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 'On'); // TODO:: Turn Off for Security Audit
+error_reporting(E_ALL);
+header("X-XSS-Protection: 1;mode = block");
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: X-Requested-With');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
