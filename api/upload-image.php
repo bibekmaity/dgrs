@@ -50,8 +50,9 @@ $conn = OpenDB();
 	//$Req_file=$data['file'];
 	
 	$message=null;
+	$error_no=null;
 	$target_path = "../uploads/";
-	 
+	
 	$target_path = $target_path . basename( $_FILES['file']['name']);
 	
 	if ($_FILES["file"]["error"] > 0)
@@ -59,12 +60,9 @@ $conn = OpenDB();
         $error_no= $_FILES["file"]["error"];
 		if($error_no==1)
 		$message="file_size_exceeded";
-		
-		
-    }else
+    }
+	else
 	{
-		
-		
         move_uploaded_file($_FILES["file"]["tmp_name"], $target_path);
         $bin_string = file_get_contents($target_path);
 		
@@ -72,7 +70,6 @@ $conn = OpenDB();
 		$imageFileType = strtolower(pathinfo($target_path,PATHINFO_EXTENSION));
 		
 	  	$image = 'data:image/'.$imageFileType.';base64,'.$hex_string;
-
 		
         $stmt ="update flt_mas set comp_img=:comp_img ";
 		$stmt.="where dkt_no=:dkt_no ";
@@ -82,14 +79,9 @@ $conn = OpenDB();
 		$sth->execute();
 		$message="success";
 		//unlink($target_path);
-		
-	   
     }
-	$arr = array("message"=>$message);
-	
+	$arr = array("message"=>$message,"doket_no"=>$compl_ref,"error_no"=>$error_no);	
 	echo json_encode($arr);	
-	
-
 ?>
 
 <?php
