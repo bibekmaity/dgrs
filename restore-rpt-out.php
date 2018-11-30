@@ -34,20 +34,26 @@ $ses_sub_div_id = $Session->Get('sub_div_id');
 $ses_comp_type_id = $Session->Get('comp_type_id');
 
 $submit = isset($_POST['submit']) ? $_POST['submit'] : '';
-$from_date1 = isset($_POST['from_date1']) ? $_POST['from_date1'] : '';
-$to_date1 = isset($_POST['to_date1']) ? $_POST['to_date1'] : '';
+$reservation = isset($_POST['reservation']) ? $_POST['reservation'] : '';
 $csrftoken = isset($_POST['csrftoken']) ? $_POST['csrftoken'] : '';
 
-$from_date1 =test_input($from_date1);
-$to_date1 =test_input($to_date1);
-
-if(!empty($from_date1))
+if(!empty($reservation))
 {
-$from_date=british_to_ansi($from_date1);
-}
-if(!empty($to_date1))
-{
-$to_date=british_to_ansi($to_date1);
+	$date_period=explode("-",$reservation);
+	$from_date1 =$date_period[0];
+	$to_date1 = $date_period[1];	
+	
+	$from_date1 =test_input($from_date1);
+	$to_date1 =test_input($to_date1);
+	
+	if(!empty($from_date1))
+	{
+	$from_date=british_to_ansi($from_date1);
+	}
+	if(!empty($to_date1))
+	{
+	$to_date=british_to_ansi($to_date1);
+	}
 }
 $sqlTK="SELECT count(id) as tk from user_log_mas where token=:csrftoken and id=:ses_id ";
 //echo "$sqlTK $csrftoken";
@@ -114,7 +120,7 @@ if($tk>0)
         <div class="box">
         <div class="box-header with-border">
         </div>
-        <div class="box-body">
+        <div class="box-body" >
         <?php
     	    $sql="SELECT CURRENT_TIMESTAMP as print_dtl ";
     		$sth = $conn->prepare($sql);
@@ -126,42 +132,42 @@ if($tk>0)
     		$print_date=british_to_ansi($print_dt[0]);
 
     	?>
-        <table class="table table-bordered" width="95%">
+        <table class="table table-bordered" width="95%" >
         <thead>
         <tr>
-        <td rowspan="3" align="center"><img src="<?php echo $full_url; ?>/images/logo.png" /></td>
-        <td colspan="13" align="center" style=" border-bottom:none !important;">&nbsp;</td>  
+        <td rowspan="3" align="center"><img src="<?php echo $full_url; ?>/images/logo.png" width="35" hight="45" /></td>
+        <td colspan="14" align="center" style=" border-bottom:none !important;">&nbsp;</td>  
         </tr>
         <tr>
-        <td colspan="13" align="center"  style=" border-top:none !important;border-bottom:none !important;"><B><?php echo " Complaints Restored <br />Period: $from_date1 - $to_date1";?></B></td>
+        <td colspan="14" align="center"  style=" border-top:none !important;border-bottom:none !important;"><B><?php echo " Complaints Restored <br />Period: $from_date1 - $to_date1";?></B></td>
         </tr>
         <tr>
-        <td colspan="13" align="right"  style=" border-top:none !important;"><B>Print Date : <?php echo $print_date; ?> Time : <?php echo $print_dt[1]; ?></B></td>
+        <td colspan="14" align="right"  style=" border-top:none !important;"><B>Print Date : <?php echo $print_date; ?> Time : <?php echo $print_dt[1]; ?></B></td>
         </tr>
         </thead> 
         
         <tr>
         <td align="center"><B>Srl</B></td>
-        <td align="center"><B>Complaintner </B></td>
-        <td align="center"><B>Address </B></td>
-        <td align="center"><B>Mobile No</B></td>
-        <td align="center"><B>Block Name </B></td>
-        <td align="center"><B>PS Name </B></td>
+        <td align="center" class="one"><B>Complaintner </B></td>
+        <td align="center" class="one"><B>Address </B></td>
+        <td align="center" class="one"><B>Mobile No</B></td>
+        <td align="center" class="one"><B>Block Name </B></td>
+        <td align="center" class="one"><B>PS Name </B></td>
         <td align="center"><B>Comp Type</B></td>
-        <td align="center"><B>Comp Desc</B></td>
-        <td align="center"><B>Comp T0</B></td>
+        <td align="center" class="one"><B>Comp Desc</B></td>
+        <td align="center" class="one"><B>Comp T0</B></td>
         <td align="center"><B>Dkt No</B></td>
         <td align="center"><B>Dkt Date</B></td>
-        <td align="center"><B>Refer To</B></td>
-        <td align="center"><B>Refer Date</B></td>
-        <td align="center"><B>Close Date</B></td>
-
+        <td align="center" class="one"><B>Trf To</B></td>
+        <td align="center" class="one"><B>Trf Date</B></td>
+        <td align="center" class="one"><B>Remarks</B></td>
+        <td align="center" class="one"><B>Disposed On</B></td>
         </tr>
         
         <?php
         $sql1="select f.rmn,f.dkt_no,f.dkt_date,f.comp_desc,c.citizen_nm,b.block_nm,p.ps_nm,";
         $sql1.=" cm.comp_type_eng,dm.de_eng,f.refer_to,f.refer_date,f.close_date,f.close_by,  ";
-		$sql1.=" f.addr,f.street,f.para,f.village,f.landmark,close_by ";
+		$sql1.=" f.addr,f.street,f.para,f.village,f.landmark,f.close_by,f.refer_rmk ";
         $sql1.=" from flt_his f, citizen_mas c, block_mas b, ps_mas p, compl_type_mas cm, dept_mas dm ";
         $sql1.=" where 1=1 ";
         $sql1.=" and f.comp_type_id=cm.comp_type_id ";
@@ -192,7 +198,7 @@ if($tk>0)
 			$sql1.=" and f.refer_to=:ses_uid ";	
 		}
 		$sql1.=" and f.dist_id=:ses_dist_id ";
-        $sql1.=" ORDER BY f.dkt_date,f.dkt_no DESC ";
+        $sql1.=" ORDER BY f.close_date DESC, f.dkt_no ";
         $sth = $conn->prepare($sql1);
 //        $sth->bindParam(':from_date', $from_date);
 		$sth->bindParam(':ses_dist_id', $ses_dist_id);
@@ -240,10 +246,10 @@ if($tk>0)
 		{
 		//	$sth->bindParam(':ses_comp_type_id', $ses_comp_type_id);
 		}
+        $srl=0;
         $sth->execute();
         $ss=$sth->setFetchMode(PDO::FETCH_ASSOC);
         $row1 = $sth->fetchAll();
-        $srl=0;
         foreach ($row1 as $key => $value1) 
         {
             $srl++;
@@ -265,6 +271,7 @@ if($tk>0)
             $para=$value1['para'];
             $village=$value1['village'];
             $landmark=$value1['landmark'];
+            $refer_rmk=$value1['refer_rmk'];
             $close_by=$value1['close_by'];			
 			
 			$street1="";
@@ -327,21 +334,61 @@ if($tk>0)
             ?>
             <tr> 
             <td align="right"><?php echo $srl;?></td>
-            <td><?php echo $citizen_nm;?></td>
-            <td><?php echo "$address";?></td>
-            <td><?php echo $rmn;?></td>
-            <td><?php echo $block_nm_ben;?></td>
-            <td><?php echo $ps_nm_ben;?></td>
+            <td class="one"><?php echo $citizen_nm;?></td>
+            <td class="one"><?php echo "$address";?></td>
+            <td class="one"><?php echo $rmn;?></td>
+            <td class="one"><?php echo $block_nm_ben;?></td>
+            <td class="one"><?php echo $ps_nm_ben;?></td>
             <td><?php echo $comp_type;?></td>
-            <td><?php echo $comp_desc;?></td>
-            <td><?php echo $dept_nm;?></td>
+            <td class="one"><?php echo $comp_desc;?></td>
+            <td class="one"><?php echo $dept_nm;?></td>
             <td><?php echo $dkt_no;?></td>
             <td nowrap align="center"><?php echo "$dkt_date<br/>$dkt_time";?></td>
-            <td><?php echo $ref_to;?></td>
-            <td nowrap align="center"><?php echo "$ref_dt";?></td>
-            <td nowrap align="center"><?php echo "$closed<br>$close_by";?></td>
+            <td class="one"><?php echo $ref_to;?></td>
+            <td nowrap align="center" class="one"><?php echo "$ref_dt";?></td>
+            <td align="center" class="one"><?php echo "$refer_rmk";?></td>
+            <td nowrap align="center" class="one"><?php echo "$closed<br>$close_by";?></td>
             </tr>
             <?php
+			
+			$sqlC="select count(*) as cnT from refer_mas WHERE rmn=:rmn and dkt_no=:dkt_no ";
+			$sth_search = $conn->prepare($sqlC);
+			$sth_search->bindParam(':rmn', $rmn);
+			$sth_search->bindParam(':dkt_no', $dkt_no);
+			$sth_search->execute();
+			$ss_search=$sth_search->setFetchMode(PDO::FETCH_ASSOC);
+			$row_search = $sth_search->fetch();
+			$cnT=$row_search['cnT'];
+			if($cnT>1)
+			{
+				$sqlR="select r.refer_date,r.remarks,u.user_nm from refer_mas r, user_mas u ";
+				$sqlR.=" WHERE r.refer_to=u.uid and r.rmn=:rmn and r.dkt_no=:dkt_no ";
+				$sth_search = $conn->prepare($sqlR);
+				$sth_search->bindParam(':rmn', $rmn);
+				$sth_search->bindParam(':dkt_no', $dkt_no);
+				$sth_search->execute();
+				$ss_search=$sth_search->setFetchMode(PDO::FETCH_ASSOC);
+				$row_search = $sth_search->fetchAll();
+				foreach ($row_search as $key => $value1) 
+				{
+					$srl++;
+					$refer_date=$value1['refer_date'];
+					$remarks=$value1['remarks'];
+					$user_nm=$value1['user_nm'];
+					if($refer_rmk!=$remarks)
+					{
+						?>
+						<tr>
+						<td colspan="11">&nbsp;</td>
+						<td class="one"><?php echo $user_nm;?></td>
+						<td align="center" class="one"><?php echo "$refer_date";?></td>
+						<td align="left" class="one"><?php echo "$remarks";?></td>
+						<td align="left" class="one">&nbsp;</td>
+						</tr>
+						<?php
+					}
+				}
+			}
         }
     	?>
         </table>
@@ -352,6 +399,8 @@ if($tk>0)
         <?php
     }
     ?>
+
+    
     </body>
     </html>
     <?php

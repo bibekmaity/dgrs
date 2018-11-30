@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 'On'); // TODO:: Turn Off for Security Audit
-error_reporting(E_ALL);
 header("X-XSS-Protection: 1;mode = block");
 
 include('./header.php'); 
@@ -286,65 +284,62 @@ $rowTF = $sthTF->fetch();
 $tf_fault=$rowTF['tf_fault'];
 ?>
 <div class="row">
-	<div class="col-lg-3 col-xs-3">
+	<div class="col-lg-3 col-xs-12">
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3></h3>
-
-              <p>Today's Complaints :&nbsp;<?php echo "$t_fault"?></p>
+              <h4>Todays Complaint: <?php echo "$t_fault"?></h4>
             </div>
             <div class="icon">
               <i class="fa fa-battery-3" aria-hidden="true" style="opacity: .6;"></i>
              <!-- <i class="ion ion-pie-graph"></i>-->
             </div>
-            <a href="./today-comp.php" class="small-box-footer" target="_blank">More info <i class="fa fa-arrow-circle-right"></i></a>
+           <!-- <a href="#" class="small-box-footer" target="_blank">&nbsp;</a>-->
+            <a href="./today-comp.php" class="small-box-footer" target="_blank">More <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        <div class="col-lg-3 col-xs-3">
+        <div class="col-lg-3 col-xs-12">
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3></h3>
-
-              <p>Today's Refer:&nbsp;<?php echo "$t_refer"; ?></p>
+              <h4>Todays Refer: <?php echo "$t_refer"; ?></h4>
             </div>
             <div class="icon">
               <i class="fa fa-battery-empty" aria-hidden="true" style="opacity: .6;"></i>
              <!-- <i class="ion ion-bag"></i>-->
             </div>
-            <a href="today-refer.php" class="small-box-footer" target="_blank">More info <i class="fa fa-arrow-circle-right"></i></a>
+           <!--  <a href="#" class="small-box-footer" target="_blank">&nbsp;</a>-->
+            <a href="today-refer.php" class="small-box-footer" target="_blank">More <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-3">
+        <div class="col-lg-3 col-xs-12">
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3> </h3>
-              <p>Today's Resolved :&nbsp;<?php echo "$t_resolve"?></p>
+              <h4>Todays Clear: <?php echo "$t_resolve"?></h4>
             </div>
             <div class="icon">
               <i class="fa fa-battery-1" aria-hidden="true" style="opacity: .6;"></i>
               <!--<i class="ion ion-stats-bars"></i>-->
             </div>
-            <a href="today-clear.php" class="small-box-footer" target="_blank">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <!-- <a href="#" class="small-box-footer" target="_blank">&nbsp;</a>-->
+            <a href="today-clear.php" class="small-box-footer" target="_blank">More <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         
-        <div class="col-lg-3 col-xs-3">
+        <div class="col-lg-3 col-xs-12">
           <!-- small box -->
           <div class="small-box bg-fuchsia">
             <div class="inner">
-              <h3> </h3>
-
-              <p>Total Pending:&nbsp;<?php echo "$t_pending"?></p>
+              <h4>Total Pending: <?php echo "$t_pending"?></h4>
             </div>
             <div class="icon">
               <i class="fa fa-battery-full" aria-hidden="true" style="opacity: .6;"></i>
              <!-- <i class="ion ion-stats-bars"></i>-->
             </div>
-            <a href="tot-pndg.php" class="small-box-footer" target="_blank">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <!-- <a href="#" class="small-box-footer" target="_blank">&nbsp;</a>-->
+            <a href="tot-pndg.php" class="small-box-footer" target="_blank">More <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         
@@ -356,7 +351,7 @@ $tf_fault=$rowTF['tf_fault'];
         <div class="col-md-12">
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Monthly Complaints Grievance</h3>
+              <!--<h3 class="box-title">Monthly Complaints Grievance</h3>-->
 
               <div class="box-tools pull-right col-sm-3">
               <table border="0" width="100%">

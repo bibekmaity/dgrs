@@ -120,7 +120,7 @@ if($tk>0)
         <table class="table table-bordered" width="95%">
         <thead>
         <tr>
-        <td rowspan="3" align="center"><img src="<?php echo $full_url; ?>/images/logo.png" /></td>
+        <td rowspan="3" align="center"><img src="<?php echo $full_url; ?>/images/logo.png" width="35" hight="45" /></td>
         <td colspan="13" align="center" style=" border-bottom:none !important;">&nbsp;</td>  
         </tr>
         <tr>
@@ -142,8 +142,8 @@ if($tk>0)
         <td align="center"><B>Comp T0</B></td>
         <td align="center"><B>Dkt No</B></td>
         <td align="center"><B>Dkt Date</B></td>
-        <td align="center"><B>Refer To</B></td>
-        <td align="center"><B>Refer Date</B></td>
+        <td align="center"><B>Trf To</B></td>
+        <td align="center"><B>Trf On</B></td>
 
         </tr>
         
@@ -179,7 +179,7 @@ if($tk>0)
 			$sql1.=" and f.refer_to=:ses_uid ";	
 		}
 		$sql1.=" and f.dist_id=:ses_dist_id ";
-        $sql1.=" ORDER BY f.dkt_date,f.dkt_no DESC ";
+        $sql1.=" ORDER BY f.dkt_no DESC, f.dkt_date ";
         $sth = $conn->prepare($sql1);
 //        $sth->bindParam(':from_date', $from_date);
 		$sth->bindParam(':ses_dist_id', $ses_dist_id);

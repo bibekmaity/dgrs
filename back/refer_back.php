@@ -43,12 +43,27 @@ if(($tag=='REF-NOTE'))
 {
 	margin-bottom: 5px;
 }
+@media only screen and (max-width: 800px) {
+  .modal-header,.modal-body,.modal-footer,.modal-content,.modal-dialog
+  {     
+	 width:99.5% !important;
+  }
+  .modal-dialog
+  {
+	  margin:2px;
+  }
+  .modal-body
+  {
+	height:275px !important;
+  }
+  
+}
 </style>
 <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="./plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <link rel="stylesheet" href="./dist/css/AdminLTE.min.css">
 <link rel="stylesheet" href="./plugins/timepicker/bootstrap-timepicker.min.css">
-<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+<form method="POST" enctype="multipart/form-data"  id="fileUploadForm">
     <div class="example-modal">
         <div class="modal">
           <div class="modal-dialog">
@@ -90,10 +105,9 @@ if(($tag=='REF-NOTE'))
                   </div>
           		</div>
           		<div class="form-group">
-	                <label for="Photo" class="col-sm-4" >Photo</label>
+	                <label for="Document Upload" class="col-sm-4" >Document Upload</label>
 	                <div class="col-sm-8">
-	                   <input  id="photo" type="file" accept="image/gif, image/jpeg, image/png" onchange="readURL(this);" class="form-control" tabindex="3" >
-                        <input id="base" name="base" type="text" class="form-control" readonly="readonly" style="visibility:hidden;" />
+                       <input type="file" class="form-control" id="photo" name="photo[]" placeholder="Enter photo"  tabindex="3">
 	                </div>
           		  </div>   
                 </div>
@@ -122,26 +136,7 @@ if(($tag=='REF-NOTE'))
 <script src="./plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="./plugins/input-mask/jquery.inputmask.extensions.js"></script>  
 <script>
-function readURL(input) {
-  var FileSize = input.files[0].size / 1024 / 1024; // in MB
-  if (FileSize > 2) 
-  {
-        alert('File size exceeds 2 MB');
-        $(input).val('');
-  } 
-  else 
-  {      
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        $('#photo').attr('src', e.target.result);
-        
-        $('#base').val(e.target.result);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-}
+
 $(document).ajaxStart(function ()
 {
   $('body').addClass('wait');
@@ -170,11 +165,18 @@ $( "#doc_submit").click(function() {
 
 	var refer_to = $("#refer_to").val();
 	var photo = $("#photo").val();
-	var base = $("#base").val();
 	var remarks = $("#remarks").val();	
 	var hid_fault = $("#hid_fault").val();
 	var hid_uid = $("#hid_uid").val();	
-	
+	if(remarks=="")
+    {
+      
+	   alertify.error("Remarks can't be blank");
+	   $('#remarks').css("border-color","#FF0000");
+	   $('#remarks').focus();
+	   return false;
+      
+    }
 	if(remarks!="")
     {
        if(/^[/!<>]+$/.test(remarks))
@@ -201,7 +203,7 @@ $( "#doc_submit").click(function() {
 	    if(fileinput!="")
 	    {
 	        var extension = fileinput.substr(fileinput.lastIndexOf('.') + 1).toLowerCase(); 
-	        var allowedExtensions = ['jpg', 'jpeg', 'png'];
+	        var allowedExtensions = ["txt","doc","pdf","jpg","jpeg","gif","docx","png","xls","xlsx","odt","ods"];
 	        if (fileinput.length > 0) 
 	        { 
 	          if (allowedExtensions.indexOf(extension) === -1) 
@@ -213,13 +215,15 @@ $( "#doc_submit").click(function() {
 	        }
 	    }
 	}
-
-	var request = $.ajax({
-    url: "./back/refer_back.php",
-    method: "POST",
-    data: {refer_to: refer_to,base:base,remarks:remarks,
-    	hid_fault:hid_fault,hid_uid:hid_uid,tag: 'REF-TRAN'  },
-    dataType: "html",
+	 var formData = new FormData(document.getElementById("fileUploadForm"));
+	 var request = $.ajax({
+	  url: "./back/refer_entry_back.php",
+	  method: "POST",
+	  data: formData,
+	  enctype: 'multipart/form-data',
+	  processData: false,  
+	  contentType: false,  
+	  dataType: "html",
     success:function(msg) {
     alert('Docket Update Successfully');
     location.reload();
@@ -236,61 +240,7 @@ $( "#doc_submit").click(function() {
 <?php
 }
 ?>
-<?php
-/*-------------- insert into trans mas --------------------*/
-if(($tag=='REF-TRAN'))
-{
-	
-	$refer_to= $_POST['refer_to'];
-	$base= $_POST['base'];
-	$remarks= $_POST['remarks'];
-	$hid_fault= $_POST['hid_fault']; 
-	$hid_uid= $_POST['hid_uid'];
-	if(empty($refer_to))
-	{
-		$refer_to=$hid_uid;
-	}
-    
-    $sql_search=" select flt_id,rmn,dist_id,dkt_no from flt_mas where ";
-	$sql_search.=" md5(flt_id)=:hid_fault ";
-	$sth_search = $conn->prepare($sql_search);
-	$sth_search->bindParam(':hid_fault', $hid_fault);
-	$sth_search->execute();
-	$ss_search=$sth_search->setFetchMode(PDO::FETCH_ASSOC);
-	$row_search = $sth_search->fetch();
-	$flt_id=$row_search['flt_id'];
-	$rmn=$row_search['rmn'];
-	$dist_id=$row_search['dist_id'];
-	$dkt_no=$row_search['dkt_no'];
-	
-	/*-------------- insert data for refer_mas-----------------------------*/
-	$sql ="insert into refer_mas (";
-	$sql.="flt_id,dist_id,rmn,dkt_no,refer_doc,remarks,refer_by ";
-	$sql.=" ,refer_to,refer_date) values ( ";
-	$sql.=" :flt_id,:dist_id,:rmn,:dkt_no,:base ";
-	$sql.=" ,trim(:remarks) ,trim(:hid_uid),:refer_to,current_timestamp) ";
-	$sth = $conn->prepare($sql);
-	$sth->bindParam(':flt_id', $flt_id);
-	$sth->bindParam(':dist_id', $dist_id);
-	$sth->bindParam(':rmn', $rmn);
-	$sth->bindParam(':dkt_no', $dkt_no);
-	$sth->bindParam(':base', $base);
-	$sth->bindParam(':remarks', addslashes($remarks));
-	$sth->bindParam(':hid_uid', $hid_uid);
-	$sth->bindParam(':refer_to', $refer_to);
-	$sth->execute();
 
-	$sqlU=" update  flt_mas set refer_to=:refer_to,refer_date=current_timestamp,refer_by=:hid_uid ";
-    $sqlU.=",refer_rmk=:remarks where flt_id=:flt_id ";
-    $sthU = $conn->prepare($sqlU);
-    $sthU->bindParam(':refer_to', $refer_to);
-    $sthU->bindParam(':flt_id', $flt_id);
-    $sthU->bindParam(':remarks', $remarks);
-    $sthU->bindParam(':hid_uid', $hid_uid);
-    $sthU->execute();
-		
-}
-?>
 <?php
 /*-------------- insert into trans mas --------------------*/
 if(($tag=='SHOW-PHOTO'))
@@ -299,7 +249,7 @@ if(($tag=='SHOW-PHOTO'))
 	$img = isset($_POST['img']) ? $_POST['img'] : '';
 	$img_name = isset($_POST['img_name']) ? $_POST['img_name'] : '';
 
-	$sql_search=" select flt_id,rmn,comp_img,dkt_no from flt_mas where ";
+	$sql_search=" select flt_id,rmn,doc_upload,dkt_no,comp_img from flt_mas where ";
 	$sql_search.=" md5(flt_id)=:img ";
 	$sth_search = $conn->prepare($sql_search);
 	$sth_search->bindParam(':img', $img);
@@ -309,9 +259,13 @@ if(($tag=='SHOW-PHOTO'))
 	$flt_id=$row_search['flt_id'];
 	$rmn=$row_search['rmn'];
 	$dkt_no=$row_search['dkt_no'];
+	$doc_upload=$row_search['doc_upload'];
 	$comp_img=$row_search['comp_img'];
-
-    
+	if(!empty($doc_upload))
+	{
+		$comp_img=$doc_upload;
+	}
+		
 ?>
 <style type="text/css">
 	.modal
@@ -384,7 +338,21 @@ if($tag=="DOK-INFO")
 	
 	width:905px !important;
 }
-
+@media only screen and (max-width: 800px) {
+  .modal-header,.modal-body,.modal-footer,.modal-content,.modal-dialog
+  {     
+	 width:99.5% !important;
+  }
+  .modal-dialog
+  {
+	  margin:2px;
+  }
+  .modal-body
+  {
+	height:auto !important;
+  }
+  
+}
 </style>
 <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="./plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
@@ -414,7 +382,8 @@ if($tag=="DOK-INFO")
 						</tr>
 					</thead>
 	              	<?php
-	               	$sqlR="select r.refer_id,r.refer_date,r.remarks,r.refer_to,u.user_nm,r.refer_doc from refer_mas r, user_mas u ";
+	               	$sqlR="select r.refer_id,r.refer_date,r.remarks ";
+					$sqlR.=" ,r.refer_to,u.user_nm,r.doc_upload from refer_mas r, user_mas u ";
 					$sqlR.="WHERE dkt_no=:dkt_no and r.refer_by=u.uid ";
 					$sqlR.=" ORDER BY refer_id DESC ";
 					$sth_search = $conn->prepare($sqlR);
@@ -429,7 +398,8 @@ if($tag=="DOK-INFO")
 						$ref_from=$valueR['user_nm'];
 						$remarks=$valueR['remarks'];
 						$refer_to=$valueR['refer_to'];
-						$refer_doc=$valueR['refer_doc'];
+						$doc_upload=$valueR['doc_upload'];
+						
 						$refer_date=british_to_ansi(substr($refer_date1,0,10));
 						
 						$sqlR="select user_nm from user_mas WHERE 1=1 ";
@@ -440,6 +410,10 @@ if($tag=="DOK-INFO")
 						$ss_search=$sth_search->setFetchMode(PDO::FETCH_ASSOC);
 						$row_search = $sth_search->fetch();
 						$ref_to=$row_search['user_nm'];
+						
+						$ext = pathinfo($doc_upload, PATHINFO_EXTENSION);
+						$image_file = array("jpg", "jpeg", "gif", "png");				
+						
 						?>
 						<tr> 
 							<td><?php echo $refer_date;?></td>
@@ -447,14 +421,27 @@ if($tag=="DOK-INFO")
 							<td><?php echo $ref_to;?></td>
 							<td><?php echo $remarks;?></td>
 							<td align="center">
-							<?php if(!empty($refer_doc))
+							<?php 
+							if(!empty($doc_upload))
 						    {
-						        ?>
-						        <a href="javascript:void(0);" class="imageresource" id="<?php echo md5($refer_id); ?>" alt="<?php echo $ref_from; ?>" title="<?php echo $dkt_no;?>">
-						          <i class="fa fa-photo" aria-hidden="true" ></i>
-						        </a>	
-						        <?php
+								if(in_array($ext,$image_file))
+								{
+									?>						        
+                                    <a href="javascript:void(0);" class="imageresource" id="<?php echo md5($refer_id); ?>" alt="<?php echo $ref_from; ?>" title="<?php echo $dkt_no;?>">
+                                      <i class="fa fa-photo" aria-hidden="true" ></i>
+                                    </a>	
+                                    <?php
+								}
+								else
+								{
+									?>
+                                    <a href="./download.php?nama=<?php echo $doc_upload;?>" title="<?php echo $dkt_no;?>">
+                                      <i class="fa fa-paperclip" aria-hidden="true" ></i>
+                                    </a>
+                                    <?php
+								}
 						    }
+							
 						    ?>
 							</td>
 						</tr>
@@ -544,7 +531,7 @@ if(($tag=='SHOW-PHOTO2'))
 	$img = isset($_POST['img']) ? $_POST['img'] : '';
 	$img_name = isset($_POST['img_name']) ? $_POST['img_name'] : '';
 
-	$sql_search=" select r.refer_doc,r.dkt_no,u.user_nm,f.dkt_date ";
+	$sql_search=" select r.doc_upload,r.dkt_no,u.user_nm,f.dkt_date ";
 	$sql_search.=" from  refer_mas r,user_mas u, flt_mas f where ";
 	$sql_search.=" md5(r.refer_id)=:img and r.refer_by=u.uid and r.dkt_no=f.dkt_no ";
 	$sth_search = $conn->prepare($sql_search);
@@ -552,10 +539,9 @@ if(($tag=='SHOW-PHOTO2'))
 	$sth_search->execute();
 	$ss_search=$sth_search->setFetchMode(PDO::FETCH_ASSOC);
 	$row_search = $sth_search->fetch();
-	$flt_id=$row_search['flt_id'];
 	$rmn=$row_search['rmn'];
 	$dkt_no=$row_search['dkt_no'];
-	$refer_doc=$row_search['refer_doc'];
+	$refer_doc=$row_search['doc_upload'];
 	$user_nm=$row_search['user_nm'];
 	$dkt_date1=$row_search['dkt_date'];
 	$dkt_date=british_to_ansi(substr($dkt_date1,0,10));

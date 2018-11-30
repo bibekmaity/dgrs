@@ -36,6 +36,7 @@ $ses_comp_type_id = $Session->Get('comp_type_id');
 $ses_user_status= $Session->Get('user_status');
 $ses_current_status= $Session->Get('current_status');
 $ses_access= $Session->Get('access');
+$ses_restore_access= $Session->Get('restore_access');
 
 if($ses_user_type=='D')
 {
@@ -102,7 +103,6 @@ if($current_page!='index.php' )
   <title>জন সহায়ক - পশ্চিম মেদিনীপুর জেলা প্রশাসন</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
  <meta http-equiv="Content-Security-Policy" content="default-src 'self';img-src * 'self' data: http:; connect-src 'self' 'unsafe-inline' 'unsafe-eval' *; child-src 'self' 'unsafe-inline' 'unsafe-eval' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *  ; style-src  'self' 'unsafe-inline' 'unsafe-eval' * data: http:">
-
  <link rel="icon"  href="./images/favicon.ico">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/font-awesome/css/font-awesome.min.css">
@@ -115,6 +115,8 @@ if($current_page!='index.php' )
   <link rel="stylesheet" href="<?php echo $full_url; ?>/css/alertify.default.css" />
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="<?php echo $full_url; ?>/bower_components/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="<?php echo $full_url; ?>/plugins/daterangepicker/daterangepicker-bs3.css">
+  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -147,6 +149,7 @@ if($current_page!='index.php' )
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
+      
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <li class="dropdown user user-menu">

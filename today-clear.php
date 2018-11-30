@@ -117,7 +117,7 @@ if($tk>0)
         <table class="table table-bordered" width="95%">
         <thead>
         <tr>
-        <td rowspan="3" align="center"><img src="<?php echo $full_url; ?>/images/logo.png" /></td>
+        <td rowspan="3" align="center"><img src="<?php echo $full_url; ?>/images/logo.png" width="35" hight="45" /></td>
         <td colspan="13" align="center" style=" border-bottom:none !important;">&nbsp;</td>  
         </tr>
         <tr>
@@ -138,9 +138,9 @@ if($tk>0)
         <td align="center"><B>Comp T0</B></td>
         <td align="center"><B>Dkt No</B></td>
         <td align="center"><B>Dkt Date</B></td>
-        <td align="center"><B>Refer To</B></td>
-        <td align="center"><B>Refer Date</B></td>
-        <td align="center"><B>Close Date</B></td>
+        <td align="center"><B>Trf To</B></td>
+        <td align="center"><B>Trf On</B></td>
+        <td align="center"><B>Disp On</B></td>
 
         </tr>
         

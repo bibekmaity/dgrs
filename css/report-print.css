@@ -64,6 +64,18 @@
 	{
 	margin-top:0px !important;
 	margin-left:0px !important;
+	overflow:scroll !important;
 	}
 }
- 
+.box-body
+{
+	overflow:scroll !important;
+} 
+@media only screen and (max-width: 800px) {
+  .one
+  {     
+	/* display: none;*/
+  }
+  
+}
+   

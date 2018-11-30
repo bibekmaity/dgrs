@@ -159,7 +159,7 @@ if(($tag=="INSERT-USER"))
 	 $block = isset($_POST['block']) ? $_POST['block'] : '';
 	 $ps = isset($_POST['ps']) ? $_POST['ps'] : '';
      $comp_type=implode(',',$comp_type);
-	 $page_assign="8,9,10,11,12,17";
+	 $page_assign="8,9,10,11,17";
 
 	 $sql=" select count(*) as log_count from user_log_mas ";
 	 $sql.=" where uid=:user_id and token=:token ";

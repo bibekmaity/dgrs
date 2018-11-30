@@ -32,14 +32,22 @@ if($submit=="Submit")
 		$str_mid.= $mitem[$i].",";
 	}
 	$str_mid.="0";
-
+    if(in_array("12",$mitem))
+	{
+		$restore_access="Y";
+	}
+	else
+	{
+		$restore_access="N";
+	}
 	
-	$sql =" update user_mas set page_assign=trim(:str_mid) ";
+	$sql =" update user_mas set page_assign=trim(:str_mid),restore_access=:restore_access ";
 	$sql.=" where  ";
 	$sql.=" md5(uid)=:hr_id ";
 
 	$sth = $conn->prepare($sql);
 	$sth->bindParam(':str_mid', $str_mid);
+	$sth->bindParam(':restore_access', $restore_access);
 	$sth->bindParam(':hr_id', $hid_hr_id);
 	$sth->execute();
 

@@ -138,14 +138,7 @@ foreach ($rowc as $keyc => $rowe)
   if($close_date=='00-00-00')
   $close_date="";
   
-  if($status=='P')
-  {
-    $status1="Pndg.";
-  }
-  else
-  {
-    $status1="Close";
-  }
+  $status1="Closed";
   ?>
   
   <tr>

@@ -204,6 +204,7 @@ if($login=='Login')
 			$block_id=$row2['block_id'];
 			$ps_id=$row2['ps_id'];
 			$access=$row2['access'];
+			$restore_access=$row2['restore_access'];
 				 
 
 			if($user_status=='A')
@@ -260,7 +261,7 @@ if($login=='Login')
 				 $Session->Set('user_status',$user_status);
 				 $Session->Set('current_status',$current_status);
 				 $Session->Set('access',$access);
-
+				 $Session->Set('restore_access',$restore_access);
 				//header("location:./index.php");
 				//exit();
 

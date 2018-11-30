@@ -19,26 +19,26 @@ include('./header.php');
 <tr>
 
 <th>Mobile No</th>
-<th>Complaintner</th>
-<th>Address</th>
+<th class="one">Complaintner</th>
+<th  class="one">Address</th>
 <th>Comp No</th>
 <!--<th>Comp Date</th> -->
 <th>Comp Type</th>
-<th>Comp Desc</th>
+<th class="one">Comp Desc</th>
 <!--<th>Comp To</th> -->
-<th>Officer Remarks</th> 
-<th>Image</th>
-<th><i class="fa fa-user-plus" aria-hidden="true"></i></th>
+<th class="one">Officer Remarks</th> 
+<th class="one">Document</th>
+<th><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></th>
 </tr>
 </thead>
 <tbody>
 <?php
 
-$sql1="select f.flt_id,f.rmn,f.dkt_no,f.dkt_date,f.comp_desc,c.citizen_nm,b.block_nm_ben,p.ps_nm_ben";
-$sql1.=" ,f.comp_img,cm.comp_type_eng,dm.dept_nm,f.refer_by,f.refer_to,f.refer_date,f.addr,f.street ";
-$sql1.=",f.para,f.village,f.landmark,f.refer_rmk  ";
-$sql1.=" from flt_mas f, citizen_mas c, block_mas b, ps_mas p, compl_type_mas cm, dept_mas dm ";
-$sql1.=" where 1=1 ";
+$sql1="select f.flt_id,f.rmn,f.dkt_no,f.dkt_date,f.comp_desc,c.citizen_nm,b.block_nm_ben";
+$sql1.=" ,p.ps_nm_ben,f.comp_img,cm.comp_type_eng,dm.dept_nm,f.refer_by,f.refer_to ";
+$sql1.=",f.refer_date,f.addr,f.street,f.para,f.village,f.landmark,f.refer_rmk,f.doc_upload  ";
+$sql1.=" from flt_mas f, citizen_mas c, block_mas b, ps_mas p, compl_type_mas cm ";
+$sql1.=" , dept_mas dm where 1=1 ";
 $sql1.=" and f.comp_type_id=cm.comp_type_id ";
 $sql1.=" and c.rmn=f.rmn ";
 $sql1.=" and f.block_id=b.block_id ";
@@ -89,7 +89,6 @@ if($ses_user_type=="D")
 {
 //	$sth->bindParam(':ses_comp_type_id', $ses_comp_type_id);
 }
-
 $sth->execute();
 $ss=$sth->setFetchMode(PDO::FETCH_ASSOC);
 $row1 = $sth->fetchAll();
@@ -110,6 +109,7 @@ foreach ($row1 as $key => $value1)
 	$refer_to=$value1['refer_to'];
 	$refer_date=$value1['refer_date'];
 	$refer_rmk=$value1['refer_rmk'];
+	$doc_upload=$value1['doc_upload'];
 	
 	if(empty($refer_by))
 	$refer_by=0;
@@ -201,12 +201,12 @@ foreach ($row1 as $key => $value1)
 				
 		$dkt_info.="$refer_date | $ref_from |  $ref_to | $remarks \n";
 	}
-	
+	$ext = pathinfo($doc_upload, PATHINFO_EXTENSION);
 	?>
 	<tr> 
 	<td><?php echo $rmn;?></td>
-	<td><?php echo $citizen_nm;?></td>
-	<td><?php echo $address;?></td>
+	<td class="one"><?php echo $citizen_nm;?></td>
+	<td class="one"><?php echo $address;?></td>
 	<!--<td><?php echo $dkt_no;?></td>-->
 	<?php
 	if($ref_total==0)
@@ -227,22 +227,53 @@ foreach ($row1 as $key => $value1)
        
 	<!--<td nowrap="nowrap" align="center"><?php //echo $dkt_dt;?></td>-->
 	<td><?php echo $comp_type;?></td>
-	<td><?php echo $comp_desc;?></td>
+	<td class="one"><?php echo $comp_desc;?></td>
 	<!--<td><?php //echo $dept_nm;?></td> -->
-	<td><?php echo $refer_rmk;?></td>
-	<td align="center">
-	<?php if(!empty($comp_img))
+	<td class="one"><?php echo $refer_rmk;?></td>
+	<td align="center" class="one">
+	<?php 
+	if(!empty($doc_upload))
     {
-        ?>
-        <a href="javascript:void(0);" class="imageresource" id="<?php echo md5($flt_id); ?>" alt="<?php echo $citizen_nm; ?>" title="<?php echo $dkt_no;?>">
-          <i class="fa fa-photo" aria-hidden="true" ></i>
-        </a>	
-        <?php
+		$image_file = array("jpg", "jpeg", "gif", "png");
+		if(in_array($ext,$image_file))
+		{
+			?>
+			<a href="javascript:void(0);" class="imageresource" id="<?php echo md5($flt_id); ?>" alt="<?php echo $citizen_nm; ?>" title="<?php echo $dkt_no;?>">
+			  <i class="fa fa-photo" aria-hidden="true" ></i>
+			</a>	
+			<?php
+		}
+		else
+		{
+			?>
+			<a href="./download.php?nama=<?php echo $doc_upload;?>" title="<?php echo $dkt_no;?>">
+			  <i class="fa fa-paperclip" aria-hidden="true" ></i>
+			</a>
+            <?php	
+		}
     }
+	if(!empty($comp_img))
+	{
+		?>
+			<a href="javascript:void(0);" class="imageresource" id="<?php echo md5($flt_id); ?>" alt="<?php echo $citizen_nm; ?>" title="<?php echo $dkt_no;?>">
+			  <i class="fa fa-photo" aria-hidden="true" ></i>
+			</a>	
+			<?php
+	}
     ?>
 	</td>
-	<td><a href="javascript:void(0);" id="<?php echo md5($flt_id); ?>" class="inv_list">
-	    <i class="fa fa-pencil" aria-hidden="true" ></i></a>
+	<td><a href="javascript:void(0);" id="<?php echo md5($flt_id); ?>" class="inv_list" title="For Transfer">
+	    <i class="fa fa-exchange" aria-hidden="true" ></i></a>
+        <?php
+		if($ses_restore_access=='Y' or $ses_user_type=='A')
+		{
+			?>
+            <a href="javascript:void(0);" id="<?php echo md5($flt_id); ?>" class="inv_clear" title="For Disposal">
+            	<i class="fa fa-check-circle" aria-hidden="true" ></i>
+            </a>
+            <?php
+		}
+		?>
 	</td>
 	</tr>
 	<?php
@@ -253,16 +284,16 @@ foreach ($row1 as $key => $value1)
 <tfoot>
 <tr>
 <th>Mobile No</th>
-<th>Complaintner</th>
-<th>Address</th>
+<th class="one">Complaintner</th>
+<th class="one">Address</th>
 <th>Comp No</th>
 <!--<th>Comp Date</th> -->
 <th>Comp Type</th>
-<th>Comp Desc</th>
+<th class="one">Comp Desc</th>
 <!--<th>Comp To</th> -->
-<th>Officer Remarks</th> 
-<th>Image</th>
-<th><i class="fa fa-user-plus" aria-hidden="true"></i></th>
+<th class="one">Officer Remarks</th> 
+<th class="one">Document</th>
+<th><i class="fa fa-caret-square-o-up" aria-hidden="true"></i></th>
 </tr>
 </tfoot>
 </table>
@@ -305,7 +336,15 @@ background: transparent !important;
 <div id="myModal" class="modal">
 
 </div>
-
+<style>
+@media only screen and (max-width: 800px) {
+  .one
+  {     
+	 display: none;
+  }
+  
+}
+</style>    
 <script type="text/javascript">	
 
 $.fn.enterKey = function (fnc) {
@@ -386,7 +425,28 @@ $( ".dok_info").click(function() {
         },
   }); 
     modal.style.display = "block";
-}); 
+});
+$( ".inv_clear").click(function() {
+	
+    var hid_uid =$('#hid_uid').val();
+	var myid=$(this).attr("id");
+	//alert(myid);
+   var request = $.ajax({
+    url: "./back/restore_back.php",
+    method: "POST",
+    data: {myid: myid,hid_uid:hid_uid,tag: 'REST-NOTE'  },
+    dataType: "html",
+    success:function(msg) {
+    $("#myModal").html(msg);  
+
+  },
+  error: function(xhr, status, error) {
+            alert(status);
+            alert(xhr.responseText);
+        },
+  }); 
+    modal.style.display = "block";
+});  
 	</script>
 <?php 
 include('./footer.php'); 

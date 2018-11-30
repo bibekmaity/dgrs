@@ -18,15 +18,15 @@ include('./header.php');
 <thead>
 <tr>
 <th>Mobile No</th>
-<th>Complaintner</th>
-<th>Address</th>
+<th class="one">Complaintner</th>
+<th class="one">Address</th>
 <th>Comp No</th>
 <!--<th>Comp Date</th> -->
 <th>Comp Type</th>
-<th>Comp Desc</th>
+<th class="one">Comp Desc</th>
 <!--<th>Comp To</th> -->
-<th>Officer Remarks</th> 
-<th>Image</th>
+<th class="one">Officer Remarks</th> 
+<th class="one">Image</th>
 <th><i class="fa fa-user-plus" aria-hidden="true"></i></th>
 </tr>
 </thead>
@@ -35,7 +35,7 @@ include('./header.php');
 
 $sql1="select f.flt_id,f.rmn,f.dkt_no,f.dkt_date,f.comp_desc,c.citizen_nm,b.block_nm_ben,p.ps_nm_ben";
 $sql1.=" ,f.comp_img,cm.comp_type_eng,dm.dept_nm,f.refer_by,f.refer_to,f.refer_date,f.addr,f.street ";
-$sql1.=",f.para,f.village,f.landmark,f.refer_rmk  ";
+$sql1.=",f.para,f.village,f.landmark,f.refer_rmk,f.doc_upload  ";
 $sql1.=" from flt_mas f, citizen_mas c, block_mas b, ps_mas p, compl_type_mas cm, dept_mas dm ";
 $sql1.=" where 1=1 ";
 $sql1.=" and f.comp_type_id=cm.comp_type_id ";
@@ -107,6 +107,7 @@ foreach ($row1 as $key => $value1)
 	$refer_to=$value1['refer_to'];
 	$refer_date=$value1['refer_date'];
 	$refer_rmk=$value1['refer_rmk'];
+	$doc_upload=$value1['doc_upload'];
 	
 	if(empty($refer_by))
 	$refer_by=0;
@@ -201,8 +202,8 @@ foreach ($row1 as $key => $value1)
 	?>
 	<tr> 
 	<td><?php echo $rmn;?></td>
-	<td><?php echo $citizen_nm;?></td>
-	<td><?php echo $address;?></td>
+	<td class="one"><?php echo $citizen_nm;?></td>
+	<td class="one"><?php echo $address;?></td>
 	<!--<td><?php echo $dkt_no;?></td>-->
     <?php
 	if($ref_total==0)
@@ -222,11 +223,11 @@ foreach ($row1 as $key => $value1)
 	?>
     
 	<td><?php echo $comp_type;?></td>
-	<td><?php echo $comp_desc;?></td>
+	<td class="one"><?php echo $comp_desc;?></td>
 	<!--<td><?php //echo $dept_nm;?></td> -->
-	<td><?php echo $refer_rmk;?></td>
-	<td align="center">
-	<?php if(!empty($comp_img))
+	<td class="one"><?php echo $refer_rmk;?></td>
+	<td align="center" class="one">
+	<?php if(!empty($doc_upload))
     {
         ?>
         <a href="javascript:void(0);" class="imageresource" id="<?php echo md5($flt_id); ?>" alt="<?php echo $citizen_nm; ?>" title="<?php echo $dkt_no;?>">
@@ -248,15 +249,15 @@ foreach ($row1 as $key => $value1)
 <tfoot>
 <tr>
 <th>Mobile No</th>
-<th>Complaintner</th>
-<th>Address</th>
+<th class="one">Complaintner</th>
+<th class="one">Address</th>
 <th>Comp No</th>
 <!--<th>Comp Date</th> -->
 <th>Comp Type</th>
-<th>Comp Desc</th>
+<th class="one">Comp Desc</th>
 <!--<th>Comp To</th> -->
-<th>Officer Remarks</th> 
-<th>Image</th>
+<th class="one">Officer Remarks</th> 
+<th class="one">Image</th>
 <th><i class="fa fa-user-plus" aria-hidden="true"></i></th>
 </tr>
 </tfoot>
@@ -300,7 +301,15 @@ background: transparent !important;
 <div id="myModal" class="modal">
 
 </div>
-
+<style>
+@media only screen and (max-width: 800px) {
+  .one
+  {     
+	 display: none;
+  }
+  
+}
+</style>    
 <script type="text/javascript">	
 
 $.fn.enterKey = function (fnc) {

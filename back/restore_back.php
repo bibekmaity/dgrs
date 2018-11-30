@@ -29,10 +29,7 @@ if(($tag=='REST-NOTE'))
  <link rel="stylesheet" href="./plugins/select2/select2.min.css">
 
 <style>
-.modal-body
-{
-	height:95px !important;
-}
+
 .modal-header,.modal-body,.modal-footer,.modal-content,.modal-dialog
 {
 	
@@ -42,6 +39,31 @@ if(($tag=='REST-NOTE'))
 {
 	margin-bottom: 5px;
 }
+.form-group
+{
+	margin-top:10px;
+}
+.modal-body
+{
+	height:155px !important;
+}
+
+@media only screen and (max-width: 800px) {
+  .modal-header,.modal-body,.modal-footer,.modal-content,.modal-dialog
+  {     
+	 width:99.5% !important;
+  }
+  .modal-dialog
+  {
+	  margin:2px;
+  }
+  .modal-body
+  {
+	height:205px !important;
+  }
+  
+}
+   
 </style>
 <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="./plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
@@ -60,12 +82,22 @@ if(($tag=='REST-NOTE'))
                 <input type="hidden" id="hid_uid"  name="hid_uid" value="<?php echo $hid_uid; ?>">
               </div>
               <div class="modal-body">
+               <div class="col-md-12">
                   <div class="form-group">
-	                <label for="Remarks" class="col-sm-3" >Remarks <font color="#FF0000">*</font></label>
-	                <div class="col-sm-9">
+	                <label for="Remarks" class="col-sm-4" >Remarks <font color="#FF0000">*</font></label>
+	                <div class="col-sm-8">
 	                	<textarea name="remarks" id="remarks" class="form-control" placeholder="Enter Remarks" tabindex="2" rows="3"></textarea>
 	                </div>
-          		  </div>  
+          		  </div> 
+                  </div>
+                   <div class="col-md-12">
+                  <div class="form-group">
+	                <label for="Document Upload" class="col-sm-4" >Document Upload</label>
+	                <div class="col-sm-8">
+                       <input type="file" class="form-control" id="photo" name="photo[]" placeholder="Enter photo"  tabindex="3">
+	                </div>
+          		  </div> 
+                  </div>   
               </div>
               <div class="modal-footer">
                <input type="button" name="doc_submit" id="doc_submit" class="btn btn-primary pull-right" value="Submit" tabindex="4">
@@ -103,6 +135,7 @@ $( "#doc_submit").click(function() {
         var remarks = $("#remarks").val();	
 		var hid_fault = $("#hid_fault").val();
 		var hid_uid = $("#hid_uid").val();
+		var photo = $("#photo").val();
 
 		if(remarks=="")
 	    {    
@@ -122,17 +155,46 @@ $( "#doc_submit").click(function() {
 		       $('#remarks').focus();
 		       return false;
 	       }
-	    }  
-
-		var request = $.ajax({
-	    url: "./back/restore_back.php",
-	    method: "POST",
-	    data: {remarks:remarks, hid_fault:hid_fault,hid_uid:hid_uid,tag: 'RES-TRAN'  },
-	    dataType: "html",
-	    success:function(msg) {
-	    //	alert(msg);
-	    alert('Docket Solve Successfully');
-	    location.reload();
+	    } 
+		var fileinput =$('#photo').val();
+   
+    if(fileinput!= "")
+    {
+	    var filearr=fileinput.split('.');
+	    if(filearr.length>2)
+	     {
+	      alert('Double extension files are not allowed.'); 
+	      $('#photo').focus();
+	      return false;    
+	    }
+	    if(fileinput!="")
+	    {
+	        var extension = fileinput.substr(fileinput.lastIndexOf('.') + 1).toLowerCase(); 
+	        var allowedExtensions = ["txt","doc","pdf","jpg","jpeg","gif","docx","png","xls","xlsx","odt","ods"];
+	        if (fileinput.length > 0) 
+	        { 
+	          if (allowedExtensions.indexOf(extension) === -1) 
+	          { 
+	            alert('Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.'); 
+	            $('#photo').focus();
+	            return false; 
+	          } 
+	        }
+	    }
+	} 
+	var formData = new FormData(document.getElementById("fileUploadForm"));
+	var request = $.ajax({
+	url: "./back/restore_entry_back.php",
+	method: "POST",
+	data: formData,
+	enctype: 'multipart/form-data',
+	processData: false,  
+	contentType: false,  
+	dataType: "html",
+	success:function(msg) {
+	//	alert(msg);
+	alert('Docket Solve Successfully');
+	location.reload();
 
 	  },
 	  error: function(xhr, status, error) {
@@ -158,41 +220,7 @@ $( "#doc_submit").click(function() {
 <?php
 }
 ?>
-<?php
-/*-------------- insert into trans mas --------------------*/
-if(($tag=='RES-TRAN'))
-{
-	$remarks= $_POST['remarks'];
-	$hid_fault= $_POST['hid_fault']; 
-	$hid_uid= $_POST['hid_uid'];
-	
-	$sqlU=" update  flt_mas set refer_rmk=:remarks,close_by=trim(:hid_uid)";
-    $sqlU.=" ,close_date=current_timestamp where md5(flt_id)=:flt_id ";
-    $sthU = $conn->prepare($sqlU);
-    $sthU->bindParam(':remarks', addslashes($remarks));
-    $sthU->bindParam(':flt_id', $hid_fault);
-    $sthU->bindParam(':hid_uid', $hid_uid);
-    $sthU->execute();
 
-    $sql=" insert into flt_his (flt_id,rmn,dkt_no,dkt_date,flt_type,comp_type_id,comp_desc ";
-    $sql.=" ,comp_img,dist_id,dept_id,sub_div_id,block_id,ps_id,status,close_date,close_by ";
-    $sql.=" ,refer_to,refer_date,refer_rmk,addr,street,para,village,pin,landmark ) ";
-    $sql.=" select flt_id,rmn,dkt_no,dkt_date,flt_type,comp_type_id,comp_desc ";
-    $sql.=" ,comp_img,dist_id,dept_id,sub_div_id,block_id,ps_id,status,close_date,close_by ";
-    $sql.=" ,refer_to,refer_date,refer_rmk,addr,street,para,village,pin,landmark ";
-    $sql.=" from flt_mas where  md5(flt_id)=:flt_id ";
-    //echo $sql;
-    $sth = $conn->prepare($sql);
-	$sth->bindParam(':flt_id', $hid_fault);
-	$sth->execute();
-
-	$sqlD=" delete from flt_mas where md5(flt_id)=:flt_id ";
-	$sthD = $conn->prepare($sqlD);
-	$sthD->bindParam(':flt_id', $hid_fault);
-	$sthD->execute();
-		
-}
-?>
 
 <?php
 $conn=null;

@@ -93,7 +93,7 @@ $address = isset($_POST['address']) ? $_POST['address'] : '';
 $village = isset($_POST['village']) ? $_POST['village'] : '';
 $pin_code = isset($_POST['pin_code']) ? $_POST['pin_code'] : '';
 $email_id = isset($_POST['login']) ? $_POST['email_id'] : '';
-$base = isset($_POST['base']) ? $_POST['base'] : '';
+$photo = isset($_POST['photo']) ? $_POST['photo'] : '';
 $department = isset($_POST['department']) ? $_POST['department'] : '';
 $name = isset($_POST['name']) ? $_POST['name'] : '';
 $police = isset($_POST['police']) ? $_POST['police'] : '';
@@ -107,6 +107,22 @@ $book_type = isset($_POST['book_type']) ? $_POST['book_type'] : '';
 
 if(($submit=="Submit") or ($submit=="সাবমিট করুন"))
 {
+	$uploaddir="./uploads/";
+	$files=fileCkecking2($_FILES); 
+	
+	if(!empty($files))
+	{
+		foreach ($files as $file_key => $file_value)
+		{
+			$file_name =$uploaddir.$file_value;
+		}
+	}
+
+	else
+	{	
+		$file_name='';
+	}	
+
   $stmt2 =" select count(*) as ct ";
   $stmt2.="FROM citizen_mas ";
   $stmt2.="where token=:csrftoken  ";
@@ -182,10 +198,10 @@ if(($submit=="Submit") or ($submit=="সাবমিট করুন"))
       
     
       $sql ="insert into flt_mas(rmn,dkt_no,dkt_date,comp_type_id,comp_desc"; 
-      $sql.=",comp_img,dist_id,dept_id,sub_div_id,block_id,ps_id";
+      $sql.=",doc_upload,dist_id,dept_id,sub_div_id,block_id,ps_id";
       $sql.=",addr,street,para,village,pin,landmark,flt_type) ";
       $sql.="values(:mobile_no,:dkt_no,current_timestamp,:com_type,:comp_desc";
-      $sql.=",:comp_img,:dist_id,:department,:sub_div_id,:block_id,:ps_id";
+      $sql.=",:file_name,:dist_id,:department,:sub_div_id,:block_id,:ps_id";
       $sql.=",:addr,:street,:para,:village,:pin,:landmark,:book_type";
       $sql.=")";
       $sth = $conn->prepare($sql);
@@ -193,7 +209,7 @@ if(($submit=="Submit") or ($submit=="সাবমিট করুন"))
       $sth->bindParam(':dkt_no', $dkt_no);
       $sth->bindParam(':com_type', $com_type);
       $sth->bindParam(':comp_desc', addslashes($comp_desc));
-      $sth->bindParam(':comp_img', $base);
+      $sth->bindParam(':file_name', $file_name);
       $sth->bindParam(':dist_id', $hid_dist);
       $sth->bindParam(':department', $dept_id);
       $sth->bindParam(':sub_div_id', $sub_div_id);
@@ -425,8 +441,7 @@ if(($submit=="Submit") or ($submit=="সাবমিট করুন"))
                         <div class="form-group">
                           <label for="<?php echo $imag_label; ?>" class="col-sm-4"><?php echo $imag_label; ?> <font color="#FF0000">*</font></label>
                           <div class="col-sm-8">
-                            <input  id="photo" type="file" accept="image/gif, image/jpeg, image/png" onchange="readURL(this);" class="form-control" tabindex="14">
-                            <input id="base" name="base" type="text" class="form-control" readonly="readonly" style="visibility:hidden;" />
+                           <input  id="photo" type="file" name="photo" class="form-control" tabindex="17" >
                           </div>
                         </div>    
                       </div>
@@ -599,7 +614,7 @@ jQuery('#submit').click( function()
       if(fileinput!="")
       {
           var extension = fileinput.substr(fileinput.lastIndexOf('.') + 1).toLowerCase(); 
-          var allowedExtensions = ['jpg', 'jpeg', 'png'];
+          var allowedExtensions = ["txt","doc","pdf","jpg","jpeg","gif","docx","png","xls","xlsx","odt","ods"];
           if (fileinput.length > 0) 
           { 
             if (allowedExtensions.indexOf(extension) === -1) 
