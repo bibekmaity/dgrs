@@ -98,7 +98,7 @@ $remove_file =null;
   return $remove_file["$idx"];
  
 }
-function fileCkecking2($_FILES)
+function fileCkecking2($FILES)
 {
 
 $msg=array();
@@ -106,7 +106,7 @@ $error=array();
 $msg['invalid']='';
 $allowedExtensions = array("txt","doc","pdf","jpg","jpeg","gif","docx","png","xls","xlsx","odt","ods");
 //print_r($FILES);
- 	foreach ($_FILES as $key => $file) {
+ 	foreach ($FILES as $key => $file) {
   
 	if(!empty($file['name']))
 	  {
