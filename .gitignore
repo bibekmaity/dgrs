@@ -2,3 +2,5 @@
 config\.inc\.php
 
 php-mailer/config\.gmail\.php
+
+uploads/
