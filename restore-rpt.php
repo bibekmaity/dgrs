@@ -18,10 +18,7 @@ include('./header.php');
 <div class="form-group">
 <label for="Period" class="col-sm-2">Period</label>
 <div class="col-sm-5">
-  <input type="text" name="from_date1" id="from_date1" class="form-control"   data-inputmask="'alias': 'dd/mm/yyyy'" data-mask  placeholder="From Date" />
-</div>
-<div class="col-sm-5">
-  <input type="text" name="to_date1" id="to_date1" class="form-control"   data-inputmask="'alias': 'dd/mm/yyyy'" data-mask   placeholder="To Date" />
+  <input type="text" name="reservation" id="reservation" class="form-control"  autocomplete="off"  placeholder="Period" required />
 </div>
 </div>
 
@@ -37,38 +34,20 @@ include('./header.php');
 </div>
 </div>
 </div>  
+<script src="<?php echo $full_url; ?>/bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script>
 	$("#submit").click(function(){
 		
 		var user_type=$("#hid_user_type").val();
 		var block=$("#block").val();
-		var from_date1=$("#from_date1").val();
-		var to_date1=$("#to_date1").val();
+		var reservation=$("#reservation").val();
 		
-		if(from_date1=="" || to_date1=="")
+		if(reservation=="")
 		{
 			alertify.error("Please input date range");
 			return false;
 		}
-		if(from_date1!="")
-	    {
-	   	   if(!/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/.test(from_date1))
-		   {
-	         alertify.error("Please input valid From Date")
-	         $('#from_date1').focus();
-		     return false;
-	       }
-	    } 
-	    if(to_date1!="")
-	    {
-	   	   if(!/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/.test(to_date1))
-		   {
-	         alertify.error("Please input valid To Date")
-	         $('#to_date1').focus();
-		     return false;
-	       }
-	    } 
 	
 		if(user_type=="B" && block=="")
 		{
@@ -77,6 +56,9 @@ include('./header.php');
 		}
 		
 	});
+	$('#from_date1').datepicker({autoclose: true});
+$('#to_date1').datepicker({autoclose: true});
+
 </script>
 <?php 
 include('./footer.php'); 
