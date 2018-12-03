@@ -427,7 +427,7 @@ if($tag=="DOK-INFO")
 								if(in_array($ext,$image_file))
 								{
 									?>						        
-                                    <a href="javascript:void(0);" class="imageresource" id="<?php echo md5($refer_id); ?>" alt="<?php echo $ref_from; ?>" title="<?php echo $dkt_no;?>">
+                                    <a href="javascript:void(0);" class="referimage" id="<?php echo md5($refer_id); ?>" alt="<?php echo $ref_from; ?>" title="<?php echo $dkt_no;?>">
                                       <i class="fa fa-photo" aria-hidden="true" ></i>
                                     </a>	
                                     <?php
@@ -465,14 +465,14 @@ $(".close").click(function(){
 	modal.style.display = "none";
 });
 });
-$( ".imageresource").click(function() {
+$( ".referimage").click(function() {
 	
-    var img =$(this).attr("id");
-    var img_name =$(this).attr("alt");
+    var refer_id =$(this).attr("id");
+    //alert(refer_id);
     var request = $.ajax({
     url: "./back/refer_back.php",
     method: "POST",
-    data: {img: img,img_name:img_name,tag: 'SHOW-PHOTO2'  },
+    data: {refer_id: refer_id,tag: 'SHOW-PHOTO2'  },
     dataType: "html",
     success:function(msg) {
     $("#myModal").html(msg);  
@@ -528,14 +528,13 @@ background: transparent !important;
 if(($tag=='SHOW-PHOTO2'))
 {	
 	
-	$img = isset($_POST['img']) ? $_POST['img'] : '';
-	$img_name = isset($_POST['img_name']) ? $_POST['img_name'] : '';
+	$refer_id = isset($_POST['refer_id']) ? $_POST['refer_id'] : '';
 
 	$sql_search=" select r.doc_upload,r.dkt_no,u.user_nm,f.dkt_date ";
 	$sql_search.=" from  refer_mas r,user_mas u, flt_mas f where ";
-	$sql_search.=" md5(r.refer_id)=:img and r.refer_by=u.uid and r.dkt_no=f.dkt_no ";
+	$sql_search.=" md5(r.refer_id)=:refer_id and r.refer_by=u.uid and r.dkt_no=f.dkt_no ";
 	$sth_search = $conn->prepare($sql_search);
-	$sth_search->bindParam(':img', $img);
+	$sth_search->bindParam(':refer_id', $refer_id);
 	$sth_search->execute();
 	$ss_search=$sth_search->setFetchMode(PDO::FETCH_ASSOC);
 	$row_search = $sth_search->fetch();
