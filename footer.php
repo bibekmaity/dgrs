@@ -39,15 +39,19 @@ Powered By&nbsp;<a href="http://infotechsystems.in" target="_blank">Infotech Sys
 <script src="<?php echo $full_url; ?>/dist/js/adminlte.min.js"></script>
 <script src="<?php echo $full_url; ?>/dist/js/demo.js"></script>
 <script src="<?php echo $full_url; ?>/plugins/daterangepicker/daterangepicker.js"></script>
-
+<script src="<?php echo $full_url; ?>/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script>
 
   $(function () {
+     $('#date').datepicker({
+       autoclose: true,
+       format: 'dd/mm/yyyy'
+    })
     $('.select2').select2()
 	 $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
     $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
     $('[data-mask]').inputmask()
-	$('#reservation').daterangepicker({format: 'DD/MM/YYYY'});
+	$('#reservation').daterangepicker({format: 'dd/mm/yy'});
 
 	$('.datetimemask').inputmask({
         mask: "1/2/y h:s:s",
