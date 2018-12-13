@@ -49,7 +49,7 @@ foreach ($rowc as $keyc => $rowe)
 <div class="form-group">
 <label for="Period" class="col-sm-2">Year</label>
 <div class="col-sm-3">
-  <input type="text" name="year" id="year" class="form-control"  autocomplete="off"  placeholder="Year" required />
+  <input type="text" name="year" id="year" class="form-control"  autocomplete="off"  placeholder="Year" required  maxlength="4" minlength="4" />
 </div>
 </div>
 </div>
@@ -58,7 +58,7 @@ foreach ($rowc as $keyc => $rowe)
 <div class="form-group">
 <label for="Period" class="col-sm-2">Date</label>
 <div class="col-sm-3">
-  <input type="text" name="date" id="date" class="form-control"  autocomplete="off"  placeholder="Date" required />
+  <input type="text" name="date" id="date" class="form-control"  autocomplete="off"  placeholder="Date"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask required />
 </div>
 </div>
 </div>

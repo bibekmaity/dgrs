@@ -106,13 +106,14 @@ if($tk>0)
 <style type="text/css">
 body
 {
-	
 }
 @media print
 {
 	#page
 	{
 		page-break-after:always !important;
+        width:210mm !important;
+		zoom:100% !important;
 	}
 	#change
 	{
@@ -179,10 +180,8 @@ body
         		</td>
         	</tr>
         	<tr style="font-weight:bold;"> 
-        		<td align="left">Memo No:</td>
-        		<td><?php echo $memo_no;?></td>
-        		<td align="right">Dated:</td>
-        		<td><?php echo $date;?></td>        
+        		<td align="left" colspan="3">Memo No: <?php echo $memo_no;?></td>
+        		<td align="right">Dated: <?php echo $date;?></td>        
         	</tr>
 			<tr>
         		<td align="left" colspan="4">
